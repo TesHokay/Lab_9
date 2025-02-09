@@ -12,16 +12,16 @@ namespace Lab_9
         static void Main(string[] args)
         {
             DialClock clock1 = new DialClock();
-            clock1.Info();
+            Console.WriteLine(clock1.Info());
 
             DialClock clock2 = new DialClock(10, 28);
-            clock2.Info();
+            Console.WriteLine(clock2.Info());
 
             DialClock clock4 = new DialClock(11, 28);
-            clock2.Info();
+            Console.WriteLine(clock2.Info());
 
-            DialClock clock3 = new DialClock(clock2);     
-            clock3.Info();
+            DialClock clock3 = new DialClock(clock2);
+            Console.WriteLine(clock3.Info());
 
             Console.WriteLine($"Угол между часовой и минутной стрелкой 1: {clock1.GetAngle()}");
             Console.WriteLine($"Угол между часовой и минутной стрелкой 2: {clock2.GetAngle()}");
@@ -60,7 +60,8 @@ namespace Lab_9
             
             try
             {
-                dialClockArray2[10] = new DialClock(300, 0);
+                dialClockArray2[2] = new DialClock(10, 30);
+                Console.WriteLine($"Запись объекта с существующим индексом: {dialClockArray2[2]}");
             }
             catch (IndexOutOfRangeException ex)
             {

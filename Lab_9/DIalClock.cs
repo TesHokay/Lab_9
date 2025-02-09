@@ -10,8 +10,8 @@ namespace Lab_9
     public class DialClock
     {
         //Поля
-        private int hours;
-        private int minutes;
+        public int hours;
+        public int minutes;
 
         static int countObjects = 0;
 
@@ -63,8 +63,8 @@ namespace Lab_9
         //Конструктор с параметрами
         public DialClock(int hours, int minutes)
         {
-            Hours = hours;
-            Minutes = minutes;
+            this.Hours = hours;
+            this.Minutes = minutes;
             countObjects++;
         }
 
@@ -77,9 +77,9 @@ namespace Lab_9
         }
 
         //Информация об объекте
-        public void Info()
+        public string Info()
         {
-            Console.WriteLine($"Часы: {hours}, Минуты: {minutes}");
+            return $"Часы: {hours}, Минуты: {minutes}";
         }
 
         //Статический метод вычисления угла между часовой и минутной стрелками
@@ -129,7 +129,7 @@ namespace Lab_9
                 newHours += 24;
             }
 
-            if(newMinutes < 0)
+            if (newMinutes < 0)
             {
                 newMinutes += 60;
             }
@@ -138,14 +138,14 @@ namespace Lab_9
         }
 
         //Явное приведение к bool
-        public static explicit operator bool (DialClock clock)
+        public static explicit operator bool(DialClock clock)
         {
             double angle = Math.Abs(30 * clock.hours + clock.minutes / 2 - 6 * clock.minutes);
             return angle % 2.5 == 0;
         }
 
         //Неявное приведение к int
-        public static explicit operator int (DialClock clock)
+        public static explicit operator int(DialClock clock)
         {
             return clock.Hours * 60 + clock.Minutes;
         }
@@ -160,7 +160,7 @@ namespace Lab_9
         }
 
         //Перегрузка оператора + правосторонняя
-        public static DialClock operator +(int minutesAdd,  DialClock dc)
+        public static DialClock operator +(int minutesAdd, DialClock dc)
         {
             return dc + minutesAdd;
         }
@@ -190,138 +190,14 @@ namespace Lab_9
             return $"{hours:D2}:{minutes:D2}";
         }
 
-        
-    }
-    //Класс массивов
-    internal class DialClockArray
-    {
-        //
-        private static int dialClockCount = 0;
-        private static int dialClockArrayCount = 0;
-
-        public readonly DialClock[] array;
-
-        //
-        public DialClockArray(int size)
+        public override bool Equals(object obj)
         {
-            array = new DialClock[size];
-            dialClockArrayCount++;
-        }
-
-        //
-        public DialClockArray(int size, Random random)
-        {
-            array = new DialClock[size];
-            for (int i = 0; i < size; i++)
-            {
-                array[i] = new DialClock(random.Next(0, 361), random.Next(0, 361));
-                dialClockCount++;
-            }
-            dialClockArrayCount++;
-        }
-
-        //
-        public DialClockArray(DialClockArray other)
-        {
-            array = new DialClock[other.array.Length];
-            for (int i = 0; i < other.array.Length; i++)
-            {
-                array[i] = new DialClock(other.array[i].HourAngle, other.array[i].MinuteAngle);
-                dialClockCount++;   
-            }
-            dialClockArrayCount++;
-        }
-
-
-        //
-        public DialClock this[int index]
-        {
-            get
-            {
-                if (index >= 0 && index < array.Length)
-                    return array[index];
-                else
-                    throw new IndexOutOfRangeException("Индекс вышел за границы массива");
-            }
-            set
-            {
-                if (index >= 0 && index < array.Length)
-                    array[index] = value;
-                else
-                    throw new IndexOutOfRangeException("Индекс вышел за границы массива");
-            }
-        }
-
-        //Печать элементов
-        public void PrintElements()
-        {
-            foreach (var clock in array)
-            {
-                Console.WriteLine(clock);
-            }
-        }
-
-        //
-        public static int GetDialClockCount() => dialClockCount;
-        public static int GetDialClockArrayCount() => dialClockArrayCount;
-
-        //
-        public static DialClock FindMaxAngle(DialClockArray array)
-        {
-            if (array == null || array.array.Length == 0)
-                return null;
-
-            DialClock maxClock = array[0];
-            for (int i = 1; i < array.array.Length; i++)
-            {
-                if (array[i] > maxClock)
-                {
-                    maxClock = array[i];
-                }
-            }
-            return maxClock;
-        }
-
-    }
-
-    //Коллекция
-    public class DialClockCollection
-    {
-        public List<DialClock> Clocks { get; private set; }
-
-        public DialClockCollection()
-        {
-            Clocks = new List<DialClock>();
-        }
-
-        // Конструктор копирования с глубоким копированием
-        public DialClockCollection(DialClockCollection other)
-        {
-            Clocks = new List<DialClock>();
-            if (other != null && other.Clocks != null)
-            {
-                foreach (var clock in other.Clocks)
-                {
-                    Clocks.Add(new DialClock(clock));
-                }
-            }
-        }
-        //Печать коллекции
-        public static void PrintCollection(DialClockCollection collection)
-        {
-            if (collection != null && collection.Clocks != null)
-            {
-                foreach (var clock in collection.Clocks)
-                {
-                    Console.WriteLine(clock);
-                }
-            }
-            else
-            {
-                Console.WriteLine("Коллекция пуста или не задана");
-            }
+            return obj is DialClock clock &&
+                   Hours == clock.Hours &&
+                   Minutes == clock.Minutes &&
+                   HourAngle == clock.HourAngle &&
+                   MinuteAngle == clock.MinuteAngle;
         }
     }
-
 }
 
